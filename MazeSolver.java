@@ -15,6 +15,7 @@ public class MazeSolver {
     public MazeSolver(String[][] maze){
         this.maze = maze;
         coordinates = new ArrayList<>();
+        coordinates.add("(0, 0)");
         currentX = 0;
         currentY = 0;
 
@@ -53,49 +54,80 @@ public class MazeSolver {
     }
 
     public void addPoint(){
-        String toAdd = "(" + Integer.toString(currentX) + ", " + currentY + ")";
+        String toAdd = "(" + currentX + ", " + currentY + ")";
         coordinates.add(toAdd);
         yCoordinates.add(currentY);
     }
 
     public void move(){
+
+        boolean moveMade = false;
         findEnd();
 
 
-
         printMaze();
-        System.out.println("CURRENT Y: " + currentY);
-        System.out.println("NUM ROWS: "+ numRows);
+
         if (currentX == numRows - 1 && currentY == finalX) {
             finished = true;
         }
         else {
 
              if (currentY < numColumns - 1 && Objects.equals(maze[currentX][currentY + 1], ".")) {
-                maze[currentX][currentY] = "#";
+                maze[currentX][currentY] = "D";
                 currentY++;
                 addPoint();
+                moveMade = true;
             }
              else if (currentX < numRows - 1 && Objects.equals(maze[currentX + 1][currentY], ".")) {
-                maze[currentX][currentY] = "#";
+                maze[currentX][currentY] = "D";
                 currentX++;
                 addPoint();
+                moveMade = true;
             }
              else if (currentX != 0 && Objects.equals(maze[currentX - 1][currentY], ".")) {
-                maze[currentX][currentY] = "#";
+                maze[currentX][currentY] = "D";
                 currentX--;
                 addPoint();
+                moveMade = true;
             }
              else if (currentY != 0 && Objects.equals(maze[currentX][currentY - 1], ".")) {
-                maze[currentX][currentY] = "#";
+                maze[currentX][currentY] = "D";
                 currentY--;
                 addPoint();
+                moveMade = true;
             }
+             if (!moveMade){
+                 if (currentY < numColumns - 1 && Objects.equals(maze[currentX][currentY + 1], "D")) {
+                     maze[currentX][currentY] = "#";
+                     coordinates.remove("(" + currentX + ", " + currentY + ")");
+                     currentY++;
+                     moveMade = true;
+                 }
+                 else if (currentX < numRows - 1 && Objects.equals(maze[currentX + 1][currentY], "D")) {
+                     maze[currentX][currentY] = "#";
+                     coordinates.remove("(" + currentX + ", " + currentY + ")");
+                     currentX++;
+
+                     moveMade = true;
+                 }
+                 else if (currentX != 0 && Objects.equals(maze[currentX - 1][currentY], "D")) {
+                     maze[currentX][currentY] = "#";
+                     coordinates.remove("(" + currentX + ", " + currentY + ")");
+                     currentX--;
+                     moveMade = true;
+                 }
+                 else if (currentY != 0 && Objects.equals(maze[currentX][currentY - 1], "D")) {
+                     maze[currentX][currentY] = "#";
+                     coordinates.remove("(" + currentX + ", " + currentY + ")");
+                     currentY--;
+                     moveMade = true;
+                 }
+             }
+            System.out.println(coordinates);
         }
 
 
-        System.out.println("CURRENT Y: " + currentY);
-        System.out.println("MAZE.LENGTH - 1: " + (maze.length - 1));
+
     }
 
     public void findEnd(){
