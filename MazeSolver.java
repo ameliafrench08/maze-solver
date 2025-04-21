@@ -11,6 +11,7 @@ public class MazeSolver {
     ArrayList<Integer> yCoordinates;
     private int numColumns;
     private int finalX;
+    boolean moveMade;
 
     public MazeSolver(String[][] maze){
         this.maze = maze;
@@ -18,6 +19,7 @@ public class MazeSolver {
         coordinates.add("(0, 0)");
         currentX = 0;
         currentY = 0;
+        moveMade = false;
 
         yCoordinates = new ArrayList<>();
         yCoordinates.add(0);
@@ -61,16 +63,17 @@ public class MazeSolver {
 
     public void move(){
 
-        boolean moveMade = false;
+
         findEnd();
 
 
-        printMaze();
+//        printMaze();
 
         if (currentX == numRows - 1 && currentY == finalX) {
             finished = true;
+            moveMade = true;
         }
-        else {
+        if (!moveMade && !finished) {
 
              if (currentY < numColumns - 1 && Objects.equals(maze[currentX][currentY + 1], ".")) {
                 maze[currentX][currentY] = "D";
@@ -124,6 +127,7 @@ public class MazeSolver {
                  }
              }
             System.out.println(coordinates);
+             moveMade = false;
         }
 
 
@@ -143,6 +147,8 @@ public class MazeSolver {
         while (!finished){
             move();
         }
+
+        System.out.println("ANSWER:");
         System.out.println(coordinates);
     }
 
